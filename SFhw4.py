@@ -10,7 +10,7 @@ class Customer:
     def __init__(self, name, wallet = 100):
         self.name = name
         self.wallet = wallet
-        Customer.counter+=1
+        #Customer.counter+=1
         
 
     # Reload some deposit into the customer's wallet.
@@ -112,7 +112,14 @@ class Stall:
     def __str__(self):
         #print("Hello, we are " +self.name+". This is the current menu "+self.invenotry.keys()+". We charge $" + self.cost+" per item. We have $" + self.earnings+ " in total.")
         return "Hello, we are " +self.name+". This is the current menu "+self.invenotry.keys()+". We charge $" + self.cost+" per item. We have $" + self.earnings+ " in total."
-        
+
+#def ExtraCredit(customer_lst, stall, cashier, amount):
+  #  for count,customer in enumerate(customer_lst):
+   #     customer.submit_order(stall, cashier, amount)
+   #     if count%10==0:
+    #        for i in range(100):
+     #           if random.random()<=0.5:
+     #               customer.wallet+=10       
 
 class TestAllMethods(unittest.TestCase):
     
@@ -238,15 +245,7 @@ def main():
     cashier1=Cashier("Carly", directory =[stall1, stall2])
     cashier2=Cashier("Amy", directory=[stall2])
     
-    #Extra Credit attempt below
-    #test=True
-    #while test!=False:
-        #for i in range(Customer.counter):
-        #if Customer.counter%10==0:
-            #for i in range(100):
-               # if random.random()<=0.5:
-                  #  global lst_customers
-                   # Customer.customer_num.wallet+=10
+
 
     #Try all cases in the validate_order function
     #Below you need to have *each customer instance* try the four cases
@@ -264,7 +263,16 @@ def main():
     customer1.validate_order(cashier1, stall1, "chips", 2)
     customer2.validate_order(cashier2, stall2, "peaches", 2)
     
-    
+    #Testing the extra_credit function
+   # customer4=Customer("Emmma")
+    #customer5=Customer("Ashleigh")
+    #customer6=Customer("Caleigh")
+    #customer7=Customer("Gabi")
+    #customer8=Customer("Sydney")
+    #customer9=Customer("Lyla")
+    #customer10=Customer("Marni")
+    #customer_lst=[customer1, customer2, customer3, customer4, customer5, customer6, customer7, customer8, customer9, customer10]
+   # ExtraCredit(customer_lst, stall1, cashier1, 12)
 
 
 if __name__ == "__main__":
