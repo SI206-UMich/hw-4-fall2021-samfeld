@@ -212,16 +212,17 @@ class TestAllMethods(unittest.TestCase):
 	# Test validate order
     def test_validate_order(self):
 		# case 1: test if a customer doesn't have enough money in their wallet to order
-        #self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 40), "Don't have enough money for that :( Please reload more money!")
+        #checking that their wallet remains the same (indicating the transaction did not go through because not enough money)
         previous_wallet=self.f1.wallet
         self.f2.validate_order(self.c1, self.s1, "Burger", 40)
         self.assertEqual(previous_wallet, self.f1.wallet)
         # case 2: test if the stall doesn't have enough food left in stock
+        #checking that stock remains same (indicating the transaction did not go through because not enough in stock)
         previous_stock=self.s1.invenotry
         self.f1.validate_order(self.c1, self.s1, "Burger", 41)
         self.assertEqual(previous_stock, self.s1.invenotry)
-		#check that stock remains same
-        # case 3: check if the cashier can order item from that stall
+        # case 3: check if the cashier can order item from that stall 
+        #checking that the customer's wallet is reduced by the amount the order would cost them (indicating that the order went through because the cashier can order from stall)
         previous_wallet=self.f1.wallet
         self.f1.validate_order(self.c2, self.s1, "Burger", 5)
         self.assertEqual(self.f1.wallet, previous_wallet-50)
