@@ -84,7 +84,7 @@ class Stall:
 
     def process_order(self, name, quantity):
         if name in self.invenotry:
-            if self.inventory[name]>=quantity:
+            if self.invenotry[name]>=quantity:
                 self.invenotry[name]-=quantity
             #self.earnings+=self.cost*quantity
     
@@ -94,8 +94,7 @@ class Stall:
                 return True
             else:
                 return False
-        else:
-            return None
+
     def stock_up(self, name, quantity):
         if name in self.invenotry:
             self.invenotry[name]+=quantity
