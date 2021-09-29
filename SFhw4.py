@@ -10,6 +10,7 @@ class Customer:
     def __init__(self, name, wallet = 100):
         self.name = name
         self.wallet = wallet
+        Customer.counter+=1
         
 
     # Reload some deposit into the customer's wallet.
@@ -33,7 +34,9 @@ class Customer:
     def submit_order(self, cashier, stall, amount): 
         #Customer.counter+=1
         #self.customer_num=Customer.counter
+        self.wallet-=amount
         cashier.receive_payment(stall, amount)
+        
 
     # The __str__ method prints the customer's information.    
     def __str__(self):
@@ -94,6 +97,8 @@ class Stall:
                 return True
             else:
                 return False
+        else:
+            return None
 
     def stock_up(self, name, quantity):
         if name in self.invenotry:
@@ -105,7 +110,7 @@ class Stall:
         return quantity*self.cost
 
     def __str__(self):
-        print("Hello, we are " +self.name+". This is the current menu "+self.invenotry.keys()+". We charge $" + self.cost+" per item. We have $" + self.earnings+ " in total.")
+        #print("Hello, we are " +self.name+". This is the current menu "+self.invenotry.keys()+". We charge $" + self.cost+" per item. We have $" + self.earnings+ " in total.")
         return "Hello, we are " +self.name+". This is the current menu "+self.invenotry.keys()+". We charge $" + self.cost+" per item. We have $" + self.earnings+ " in total."
         
 
@@ -200,12 +205,19 @@ class TestAllMethods(unittest.TestCase):
 	# Test validate order
     def test_validate_order(self):
 		# case 1: test if a customer doesn't have enough money in their wallet to order
-        self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 40), "Don't have enough money for that :( Please reload more money!")
-        self.assertEqual(self.f2.validate_order(self.c1, self.s1, "Burger", 40), "Don't have enough money for that :( Please reload more money!")
+        #self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 40), "Don't have enough money for that :( Please reload more money!")
+        previous_wallet=self.f1.wallet
+        self.f2.validate_order(self.c1, self.s1, "Burger", 40)
+        self.assertEqual(previous_wallet, self.f1.wallet)
         # case 2: test if the stall doesn't have enough food left in stock
-        self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 41), "Our stall has run out of " + self.item_name + " :( Please try a different stall!")
-		# case 3: check if the cashier can order item from that stall
-        self.assertEqual(self.f1.validate_order(self.c2, self.s2, "Burger", 5), "Sorry, we don't have that vendor stall. Please try a different one.")
+        previous_stock=self.s1.invenotry
+        self.f1.validate_order(self.c1, self.s1, "Burger", 41)
+        self.assertEqual(previous_stock, self.s1.invenotry)
+		#check that stock remains same
+        # case 3: check if the cashier can order item from that stall
+        previous_wallet=self.f1.wallet
+        self.f1.validate_order(self.c2, self.s1, "Burger", 5)
+        self.assertEqual(self.f1.wallet, previous_wallet-50)
 
     # Test if a customer can add money to their wallet
     def test_reload_money(self):
@@ -229,6 +241,7 @@ def main():
     #Extra Credit attempt below
     #test=True
     #while test!=False:
+        #for i in range(Customer.counter):
         #if Customer.counter%10==0:
             #for i in range(100):
                # if random.random()<=0.5:
