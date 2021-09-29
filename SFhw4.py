@@ -89,7 +89,7 @@ class Stall:
         if name in self.invenotry:
             if self.invenotry[name]>=quantity:
                 self.invenotry[name]-=quantity
-            #self.earnings+=self.cost*quantity
+            
     
     def has_item(self, name, quantity):
         if name in self.invenotry:
