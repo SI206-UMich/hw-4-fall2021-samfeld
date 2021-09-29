@@ -31,13 +31,9 @@ class Customer:
     # Submit_order takes a cashier, a stall and an amount as parameters, 
     # it deducts the amount from the customer’s wallet and calls the receive_payment method on the cashier object
     def submit_order(self, cashier, stall, amount): 
-        self.cashier=cashier
-        self.stall=stall
-        self.amount=amount
-        self.wallet-=amount
-        Customer.counter+=1
-        self.customer_num=Customer.counter
-        self.cashier.receive_payment(self.stall, self.amount)
+        #Customer.counter+=1
+        #self.customer_num=Customer.counter
+        cashier.receive_payment(stall, amount)
 
     # The __str__ method prints the customer's information.    
     def __str__(self):
@@ -47,7 +43,7 @@ class Customer:
 # The Cashier class
 # The Cashier class represents a cashier at the market. 
 class Cashier:
-    lst_customers=[]
+    #lst_customers=[]
     # Constructor
     def __init__(self, name, directory =[]):
         self.name = name
@@ -71,7 +67,7 @@ class Cashier:
 	# Function returns cost of the order, using compute_cost method
     def place_order(self, stall, item, quantity):
         stall.process_order(item, quantity)
-        self.lst_customers.append(self.name)
+        #self.lst_customers.append(self.name)
         return stall.compute_cost(quantity) 
     
     # string function.
@@ -88,7 +84,8 @@ class Stall:
 
     def process_order(self, name, quantity):
         if name in self.invenotry:
-            self.invenotry[name]-=quantity
+            if self.inventory[name]>=quantity:
+                self.invenotry[name]-=quantity
             #self.earnings+=self.cost*quantity
     
     def has_item(self, name, quantity):
@@ -204,8 +201,9 @@ class TestAllMethods(unittest.TestCase):
 	# Test validate order
     def test_validate_order(self):
 		# case 1: test if a customer doesn't have enough money in their wallet to order
-        self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 30), "Don't have enough money for that :( Please reload more money!")
-		# case 2: test if the stall doesn't have enough food left in stock
+        self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 40), "Don't have enough money for that :( Please reload more money!")
+        self.assertEqual(self.f2.validate_order(self.c1, self.s1, "Burger", 40), "Don't have enough money for that :( Please reload more money!")
+        # case 2: test if the stall doesn't have enough food left in stock
         self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Burger", 41), "Our stall has run out of " + self.item_name + " :( Please try a different stall!")
 		# case 3: check if the cashier can order item from that stall
         self.assertEqual(self.f1.validate_order(self.c2, self.s2, "Burger", 5), "Sorry, we don't have that vendor stall. Please try a different one.")
